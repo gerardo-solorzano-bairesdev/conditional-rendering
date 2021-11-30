@@ -1,25 +1,69 @@
 import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {text: '', inputText: '', mode:'view'};
+    
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSave = this.handleSave.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
+  }
+  
+  handleChange(e) {
+    this.setState({ inputText: e.target.value });
+  }
+  
+  handleSave() {
+    this.setState({text: this.state.inputText, mode: 'view'});
+  }
+
+  handleEdit() {
+    this.setState({mode: 'edit'});
+  }
+  
+  renderInputField() {
+    if(this.state.mode === 'view') {
+      return <div></div>;
+    } else {
+      return (
+          <p>
+            <input
+              onChange={this.handleChange}
+              value={this.state.inputText}
+            />
+          </p>
+      );
+    }
+  }
+  
+  renderButton() {
+    if(this.state.mode === 'view') {
+      return (
+          <button onClick={this.handleEdit}>
+            Edit
+          </button>
+      );
+    } else {
+      return (
+          <button onClick={this.handleSave}>
+            Save
+          </button>
+      );
+    }
+  }
+  
+  render () {
+    return (
+      <div>
+        <p>Text: {this.state.text}</p>
+        {this.renderInputField()}
+        {this.renderButton()}
+      </div>
+    );
+  }
 }
 
 export default App;
